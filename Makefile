@@ -1,5 +1,5 @@
 run:
-	go run cmd/server/*.go
+	templ generate && go run cmd/server/*.go
 
 build:
 	go build -o server cmd/server/main.go

@@ -2,21 +2,21 @@ package main
 
 import (
 	"fmt"
-	"net/http"
+	"toughleaf/cmd/server/routes"
 	"toughleaf/config"
 
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
+	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/logger"
+	"github.com/gofiber/fiber/v3/middleware/recover"
 )
 
 func main() {
-	r := chi.NewRouter()
-	r.Use(middleware.Logger)
-	r.Use(middleware.Recoverer)
+	app := fiber.New()
+	app.Use(logger.New())
+	app.Use(recover.New())
 	config.ConnectDB()
-
-	routes(r)
+	routes.Routes(app)
 
 	fmt.Println("Server is running on port 3000")
-	http.ListenAndServe(":3000", r)
+	app.Listen(":3000")
 }
